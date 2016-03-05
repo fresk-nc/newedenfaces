@@ -74,7 +74,7 @@ gulp.task('browserify-watch', ['browserify-vendor'], () => {
         gutil.log(gutil.colors.red(err.toString()));
       })
       .on('end', () => {
-        gutil.log(gutil.colors.green('Finished rebundling in', (`${Date.now() - start}ms.`));
+        gutil.log(gutil.colors.green('Finished rebundling in', (`${Date.now() - start}ms.`)));
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
