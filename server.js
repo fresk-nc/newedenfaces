@@ -1,3 +1,5 @@
+'use strict';
+
 require('babel-register');
 
 const swig  = require('swig');
@@ -36,6 +38,21 @@ app.use((req, res) => {
   });
 });
 
-app.listen(app.get('port'), () => {
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+let onlineUsers = 0;
+
+io.sockets.on('connection', (socket) => {
+  onlineUsers++;
+
+  io.sockets.emit('onlineUsers', { onlineUsers: onlineUsers });
+
+  socket.on('disconnect', () => {
+    onlineUsers--;
+    io.sockets.emit('onlineUsers', { onlineUsers: onlineUsers });
+  });
+});
+
+server.listen(app.get('port'), () => {
   console.log(`Express server listening on port ${app.get('port')}`);
 });

@@ -38,7 +38,7 @@ class NavbarStore {
   }
 
   onGetCharacterCountFail(jqXhr) {
-    toastr.error(jqXhr.responseJSON.message);
+    toastr.error(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
   }
 }
 
