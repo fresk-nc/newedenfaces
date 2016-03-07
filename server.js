@@ -2,21 +2,28 @@
 
 require('babel-register');
 
+const path = require('path');
+const express = require('express');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 const swig  = require('swig');
 const React = require('react');
 const ReactDOM = require('react-dom/server');
 const Router = require('react-router');
-const routes = require('./app/routes');
 
-const express = require('express');
-const path = require('path');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
+const config = require('./config');
+const routes = require('./app/routes');
+const Character = require('./models/character');
 
 const app = express();
 
-app.set('port', process.env.PORT || 3000);
+mongoose.connect(config.database);
+mongoose.connection.on('error', () => {
+  console.info('Error: Could not connect to MongoDB. Did you forget to run `mongod`?');
+});
 
+app.set('port', process.env.PORT || 3000);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
