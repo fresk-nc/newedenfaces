@@ -278,6 +278,7 @@ app.get('/api/stats', (req, res, next) => {
         function getTotalVotes() {
             return Character
                 .aggregate({ $group: { _id: null, total: { $sum: '$wins' } } })
+                .exec()
                 .then((totalVotes) => {
                     return totalVotes.length ? totalVotes[0].total : 0;
                 });
